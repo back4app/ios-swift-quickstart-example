@@ -21,21 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             $0.server = "https://parseapi.back4app.com"
         }
         Parse.initialize(with: configuration)
-        let bar = PFObject(className:"Foo")
-        bar["message"] = "Hello World!"
-        bar.saveInBackground {
-            (success: Bool, error: Error?) in
-            if (success) {
-                print("You have saved an object!")
-            } else {
-                if let myError = error{
-                    print(myError.localizedDescription)
-                }else{
-                    print("Uknown error")
-                }
-            }
-        }
-
+        saveInstallationObject()
         return true
     }
 
@@ -59,6 +45,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+
+    func saveInstallationObject(){
+        if let installation = PFInstallation.current(){
+            installation.saveInBackground {
+                (success: Bool, error: Error?) in
+                if (success) {
+                    print("You have successfully connected your app to Back4App!")
+                } else {
+                    if let myError = error{
+                        print(myError.localizedDescription)
+                    }else{
+                        print("Uknown error")
+                    }
+                }
+            }
+        }
     }
 
 
